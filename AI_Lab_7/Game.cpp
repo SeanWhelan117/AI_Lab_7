@@ -149,9 +149,11 @@ void Game::render()
 
 void Game::setupTexts()
 {
-	//blackBox.setPosition(0, 1100);
 	EnemyNumberText.setString("");
 
+	double pi = 3.14159265359;
+
+	std::stringstream stream;
 
 	EnemyNumberText.setFont(m_NewYorkfont);
 	EnemyNumberText.setString("Num of Enemies: " + std::to_string(numOfEnemies));
@@ -166,26 +168,73 @@ void Game::setupTexts()
 	EnemyDistanceText.setCharacterSize(30U);
 	EnemyDistanceText.setFillColor(sf::Color::Red);
 
+	stream << std::fixed << std::setprecision(3) << rangeClose;
+	std::string closeString = stream.str();
+
+
+	std::stringstream stream2;
+	stream2 << std::fixed << std::setprecision(3) << rangeMid;
+	std::string midString = stream2.str();
+
+
+	std::stringstream stream3;
+	stream3 << std::fixed << std::setprecision(3) << rangeFar;
+	std::string FarString = stream3.str();
+
 	rangesText.setFont(m_NewYorkfont);
-	rangesText.setString("Ranges Relationships: \n close = " + std::to_string(rangeClose) + "\n mid = " + std::to_string(rangeMid) + "\n far =" + std::to_string(rangeFar));
+	rangesText.setString("Ranges Relationships: \n close = " + closeString + "\n mid = " + midString + "\n far =" + FarString);
 	rangesText.setPosition(20.0f, 1225.0f);
 	rangesText.setCharacterSize(30U);
 	rangesText.setFillColor(sf::Color::Red);
 
+	std::stringstream stream4;
+	stream4 << std::fixed << std::setprecision(3) << forceTiny;
+	std::string tinyString = stream4.str();
+
+
+	std::stringstream stream5;
+	stream5 << std::fixed << std::setprecision(3) << forceSmall;
+	std::string smallString = stream5.str();
+
+	std::stringstream stream6;
+	stream6 << std::fixed << std::setprecision(3) << forceMid;
+	std::string midString2 = stream6.str();
+
+	std::stringstream stream7;
+	stream7 << std::fixed << std::setprecision(3) << forceLarge;
+	std::string largeString = stream7.str();
+
+
 	forcesText.setFont(m_NewYorkfont);
-	forcesText.setString("forces Relationships: \n tiny = " + std::to_string(forceTiny) + "\n small = " + std::to_string(forceSmall) + "\n mid =" + std::to_string(forceMid) + "\n large =" + std::to_string(forceLarge));
+	forcesText.setString("forces Relationships: \n tiny = " + tinyString + "\n small = " + smallString + "\n mid =" + midString2 + "\n large =" + largeString);
 	forcesText.setPosition(20.0f, 1400.0f);
 	forcesText.setCharacterSize(30U);
 	forcesText.setFillColor(sf::Color::Red);
 
+	std::stringstream stream8;
+	stream8 << std::fixed << std::setprecision(3) << threatLow;
+	std::string lowString = stream8.str();
+
+	std::stringstream stream9;
+	stream9 << std::fixed << std::setprecision(3) << threatMid;
+	std::string midString3 = stream9.str();
+
+	std::stringstream stream10;
+	stream10 << std::fixed << std::setprecision(3) << threatHigh;
+	std::string highString = stream10.str();
+
 	threatLevelText.setFont(m_NewYorkfont);
-	threatLevelText.setString("Threat Level: \n low = " + std::to_string(threatLow) + "\n mid = " + std::to_string(threatMid) + "\n high =" + std::to_string(threatHigh));
+	threatLevelText.setString("Threat Level: \n low = " + lowString + "\n mid = " + midString3 + "\n high =" + highString);
 	threatLevelText.setPosition(20.0f, 1600.0f);
 	threatLevelText.setCharacterSize(30U);
 	threatLevelText.setFillColor(sf::Color::Red);
 
+	std::stringstream stream11;
+	stream11 << std::fixed << std::setprecision(3) << defuzzedResult;
+	std::string defuzzedString = stream11.str();
+
 	defuzzedResultText.setFont(m_NewYorkfont);
-	defuzzedResultText.setString("Defuzzified Result: " + std::to_string(defuzzedResult));
+	defuzzedResultText.setString("Defuzzified Result: " + defuzzedString);
 	defuzzedResultText.setPosition(20.0f, 1800.0f);
 	defuzzedResultText.setCharacterSize(30U);
 	defuzzedResultText.setFillColor(sf::Color::Red);

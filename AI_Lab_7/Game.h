@@ -9,6 +9,8 @@
 #include "Enemies.h"
 #include "Player.h"
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 class Game
 {
 public:
