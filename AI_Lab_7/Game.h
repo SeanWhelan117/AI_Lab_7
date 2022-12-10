@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include "Enemies.h"
 #include "Player.h"
+#include <iostream>
 class Game
 {
 public:
@@ -28,16 +29,34 @@ private:
 	void update(sf::Time t_deltaTime);
 	void render();
 	
-	void setupFontAndText();
+	void setupTexts();
 	void setRandomEnemyVariables();
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_NewYorkfont; // font used by message
-	sf::Text m_welcomeMessage; // text used for message on screen
 	bool m_exitGame; // control exiting game
 	bool setEnemies = false;
 	int numOfEnemies = 0;
 	int randXPosEnemies = 0;
+
+	float forceTiny, forceSmall, forceMid, forceLarge = 0;
+	float rangeClose, rangeMid, rangeFar = 0;
+
+	bool rangeCloseBool, rangeMidBool, rangeFarBool = false;
+	bool forceTinyBool, forceSmallBool, forceMidBool, forceLargeBool = false;
+
+	bool threatLow, threatMid, threatHigh;
+
+	void fuzzyLogic();
+	void findForceAndRange();
+
+	sf::RectangleShape blackBox;
+	sf::Text EnemyNumberText; 
+	sf::Text EnemyDistanceText;
+	sf::Text forcesText;
+	sf::Text rangesText;
+	sf::Text threatLevelText;
+
 };
 
 #endif // !GAME_HPP
