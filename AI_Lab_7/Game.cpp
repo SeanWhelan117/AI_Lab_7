@@ -21,7 +21,7 @@ Game::Game() :
 	}
 	blackBox.setFillColor(sf::Color::Black);
 	blackBox.setPosition(0, 1100);
-	blackBox.setSize(sf::Vector2f(400, 1000));
+	blackBox.setSize(sf::Vector2f(425, 1000));
 }
 
 /// <summary>
@@ -115,6 +115,7 @@ void Game::update(sf::Time t_deltaTime)
 		setEnemies = false;
 		findForceAndRange();
 		fuzzyLogic();
+		deFuzzifyResults();
 		setupTexts();
 
 	}
@@ -135,6 +136,8 @@ void Game::render()
 	m_window.draw(rangesText);
 	m_window.draw(forcesText);
 	m_window.draw(threatLevelText);
+	m_window.draw(defuzzedResultText);
+
 
 
 	for (int i = 0; i < numOfEnemies; i++)
@@ -156,7 +159,6 @@ void Game::setupTexts()
 	EnemyNumberText.setCharacterSize(30U);
 	EnemyNumberText.setFillColor(sf::Color::Red);
 
-
 	int distanceFromPlayer = randXPosEnemies - myPlayer.player.getPosition().x;
 	EnemyDistanceText.setFont(m_NewYorkfont);
 	EnemyDistanceText.setString("Enemy Distance: " + std::to_string(distanceFromPlayer));
@@ -177,27 +179,16 @@ void Game::setupTexts()
 	forcesText.setFillColor(sf::Color::Red);
 
 	threatLevelText.setFont(m_NewYorkfont);
-
-	std::string message = "";
-
-	if (threatHigh)
-	{
-		message = "high";
-	}
-	else if (threatMid)
-	{
-		message = "mid";
-	}
-	else if (threatLow)
-	{
-		message = "low";
-	}
-
-	threatLevelText.setString("Threat Level: " + message);
+	threatLevelText.setString("Threat Level: \n low = " + std::to_string(threatLow) + "\n mid = " + std::to_string(threatMid) + "\n high =" + std::to_string(threatHigh));
 	threatLevelText.setPosition(20.0f, 1600.0f);
 	threatLevelText.setCharacterSize(30U);
 	threatLevelText.setFillColor(sf::Color::Red);
 
+	defuzzedResultText.setFont(m_NewYorkfont);
+	defuzzedResultText.setString("Defuzzified Result: " + std::to_string(defuzzedResult));
+	defuzzedResultText.setPosition(20.0f, 1800.0f);
+	defuzzedResultText.setCharacterSize(30U);
+	defuzzedResultText.setFillColor(sf::Color::Red);
 }
 
 void Game::setRandomEnemyVariables()
@@ -216,6 +207,8 @@ void Game::setRandomEnemyVariables()
 
 void Game::findForceAndRange()
 {
+	//3 2338
+
 	int force = numOfEnemies;
 	int range = randXPosEnemies;
 
@@ -226,167 +219,80 @@ void Game::findForceAndRange()
 	// force mid = 11 - 17
 	// force large = 16 - 20
 
-	forceTiny = 0;
-	forceSmall = 0;
-	forceMid = 0;
-	forceLarge = 0;
+	//double FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3);
 
-	if (force >= 1 && force <= 5)
-	{
-		forceTiny = 1;
-	}
-	else if (force == 6)
-	{
-		forceTiny = 0.6;
-		forceSmall = 0.1;
-	}
-	else if (force == 7)
-	{
-		forceTiny = 0.1;
-		forceSmall = 0.6;
-	}
-	else if (force >= 8 && force <= 10)
-	{
-		forceTiny = 0;
-		forceSmall = 1;
-	}
-	else if (force == 11)
-	{
-		forceSmall = 0.6;
-		forceMid = 0.1;
-	}
-	else if (force == 12)
-	{
-		forceSmall = 0.1;
-		forceMid = 0.6;
-	}
-	else if (force >= 13 && force <= 15)
-	{
-		forceSmall = 0;
-		forceMid = 1;
-	}
-	else if (force == 7)
-	{
-		forceMid = 0.6;
-		forceLarge = 0.1;
-	}
-	else if (force == 7)
-	{
-		forceMid = 0.1;
-		forceLarge = 0.6;
-	}
-	else if (force >= 18 && force <= 22)
-	{
-		forceMid = 0;
-		forceLarge = 1;
-	}
+	forceTiny = FuzzyTrapezoid(force, 0, 3, 5, 7);
+	forceSmall = FuzzyTrapezoid(force, 6, 8, 10, 12);
+	forceMid = FuzzyTrapezoid(force, 11, 13, 15, 17);
+	forceLarge = FuzzyTrapezoid(force, 16, 18, 20, 22);
+
+
 
 	//range Calculations
 	// 500 - 2700 pixels away
 	// range close = 500 - 1300
-	// range mid = 1100 - 2100
-	// range far = 1900 - 2900
+	// range mid = 1150 - 2100
+	// range far = 1950 - 2750
 
-	rangeClose = 0;
-	rangeMid = 0;
-	rangeFar = 0;
+	rangeClose = FuzzyTrapezoid(range, 500, 700, 1100, 1300);
+	rangeMid = FuzzyTrapezoid(range, 1150, 1350, 1900, 2100);
+	rangeFar = FuzzyTrapezoid(range, 1950, 2150, 2550, 2750);
 
-	if (range >= 500 && range <= 1099)
-	{
-		rangeClose = 1;
-		rangeMid, rangeFar = 0;
-
-	}
-	else if (range >= 1100 && range <= 1199)
-	{
-		rangeClose = 0.6;
-		rangeMid = 0.1;
-	}
-	else if (range >= 1200 && range <= 1300)
-	{
-		rangeClose = 0.1;
-		rangeMid = 0.6;
-	}
-	else if (range >= 1301 && force <= 1899)
-	{
-		rangeClose = 0;
-		rangeMid = 1;
-	}
-	else if (range >= 1900 && range <= 1999)
-	{
-		rangeMid = 0.6;
-		rangeFar = 0.2;
-	}
-	else if (range >= 2000 && range <= 2100)
-	{
-		rangeMid = 0.1;
-		rangeFar = 0.6;
-	}
-	else if (range >= 2101 && force <= 2900)
-	{
-		rangeMid = 0;
-		rangeFar = 1;
-	}
-
-	/*forceTiny, forceSmall, forceMid, forceLarge = 0;
-	rangeClose, rangeMid, rangeFar = 0;*/
-
-	if (forceTiny > 0.5)
-	{
-		forceTinyBool == true;
-	}
-	else if (forceSmall > 0.5)
-	{
-		forceSmallBool == true;
-	}
-	else if (forceMid > 0.5)
-	{
-		forceMidBool == true;
-	}
-	else if (forceLarge > 0.5)
-	{
-		forceLargeBool == true;
-	}
-
-
-
-	if (rangeClose > 0.5)
-	{
-		rangeCloseBool == true;
-	}
-	else if (rangeMid > 0.5)
-	{
-		rangeMidBool == true;
-	}
-	else if (rangeFar > 0.5)
-	{
-		rangeFarBool == true;
-	}
 
 }
 
 
 void Game::fuzzyLogic()
 {
-	if ((rangeMid && forceTiny) || (rangeMid && forceSmall) || (rangeFar && !forceLarge))
+	threatLow = FuzzyOR(FuzzyOR(FuzzyAND(rangeMid, forceTiny), FuzzyAND(rangeMid, forceSmall)), FuzzyAND(rangeFar, FuzzyNOT(forceLarge)));
+	threatMid = FuzzyOR(FuzzyOR(FuzzyAND(rangeClose, forceTiny), FuzzyAND(rangeMid, forceMid)), FuzzyAND(rangeFar, forceLarge));
+	threatHigh = FuzzyOR(FuzzyAND(rangeClose, FuzzyNOT(forceTiny)), FuzzyAND(rangeMid, forceLarge));
+
+}
+
+void Game::deFuzzifyResults()
+{
+	defuzzedResult = 0;
+	defuzzedResult = (threatLow * 10 + threatMid * 30 + threatHigh * 50) / (threatLow + threatMid + threatHigh);
+}
+
+
+double Game::FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3)
+{
+	double result = 0;
+	double x = value;
+
+	if ((x <= x0) || (x >= x3))
 	{
-		threatLow = true;
-		threatMid = false;
-		threatHigh = false;
+		result = 0;
+	}
+	else if ((x >= x1) && (x <= x2))
+	{
+		result = 1;
+	}
+	else if ((x > x0) && (x < x1))
+	{
+		result = ((x - x0) / (x1 - x0));
+	}
+	else
+	{
+		result = ((x3 - x) / (x3 - x2));
 	}
 
-	if ((rangeFar && forceLarge) || (rangeMid && forceMid) || (rangeClose && forceTiny))
-	{
-		threatMid = true;
-		threatLow = false;
-		threatHigh = false;
-	}
+	return result;
+}
 
-	if ((rangeMid && forceLarge) || (rangeClose && !forceTiny))
-	{
-		threatLow = false;
-		threatMid = false;
-		threatHigh = true;
-	}
+double Game::FuzzyAND(double A, double B)
+{
+	return std::min(A, B);
+}
 
+double Game::FuzzyOR(double A, double B)
+{
+	return std::max(A, B);
+}
+
+double Game::FuzzyNOT(double A)
+{
+	return 1.0 - A;
 }

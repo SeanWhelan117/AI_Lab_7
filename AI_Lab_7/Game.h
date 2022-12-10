@@ -42,13 +42,23 @@ private:
 	float forceTiny, forceSmall, forceMid, forceLarge = 0;
 	float rangeClose, rangeMid, rangeFar = 0;
 
-	bool rangeCloseBool, rangeMidBool, rangeFarBool = false;
-	bool forceTinyBool, forceSmallBool, forceMidBool, forceLargeBool = false;
+	float threatLow = 0;
+	float threatMid = 0;
+	float threatHigh = 0;
 
-	bool threatLow, threatMid, threatHigh;
+	double defuzzedResult = 0;
 
 	void fuzzyLogic();
+	void deFuzzifyResults();
 	void findForceAndRange();
+
+	double FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3);
+
+	double FuzzyAND(double A, double B);
+
+	double FuzzyOR(double A, double B);
+
+	double FuzzyNOT(double A);
 
 	sf::RectangleShape blackBox;
 	sf::Text EnemyNumberText; 
@@ -56,6 +66,7 @@ private:
 	sf::Text forcesText;
 	sf::Text rangesText;
 	sf::Text threatLevelText;
+	sf::Text defuzzedResultText;
 
 };
 
