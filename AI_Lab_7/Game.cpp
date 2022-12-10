@@ -153,21 +153,21 @@ void Game::setupTexts()
 
 	double pi = 3.14159265359;
 
-	std::stringstream stream;
 
 	EnemyNumberText.setFont(m_NewYorkfont);
 	EnemyNumberText.setString("Num of Enemies: " + std::to_string(numOfEnemies));
 	EnemyNumberText.setPosition(20.0f, 1125.0f);
 	EnemyNumberText.setCharacterSize(30U);
-	EnemyNumberText.setFillColor(sf::Color::Red);
+	EnemyNumberText.setFillColor(sf::Color::White);
 
 	int distanceFromPlayer = randXPosEnemies - myPlayer.player.getPosition().x;
 	EnemyDistanceText.setFont(m_NewYorkfont);
 	EnemyDistanceText.setString("Enemy Distance: " + std::to_string(distanceFromPlayer));
 	EnemyDistanceText.setPosition(20.0f, 1175.0f);
 	EnemyDistanceText.setCharacterSize(30U);
-	EnemyDistanceText.setFillColor(sf::Color::Red);
+	EnemyDistanceText.setFillColor(sf::Color::White);
 
+	std::stringstream stream;
 	stream << std::fixed << std::setprecision(3) << rangeClose;
 	std::string closeString = stream.str();
 
@@ -185,7 +185,7 @@ void Game::setupTexts()
 	rangesText.setString("Ranges Relationships: \n close = " + closeString + "\n mid = " + midString + "\n far =" + FarString);
 	rangesText.setPosition(20.0f, 1225.0f);
 	rangesText.setCharacterSize(30U);
-	rangesText.setFillColor(sf::Color::Red);
+	rangesText.setFillColor(sf::Color::White);
 
 	std::stringstream stream4;
 	stream4 << std::fixed << std::setprecision(3) << forceTiny;
@@ -209,7 +209,7 @@ void Game::setupTexts()
 	forcesText.setString("forces Relationships: \n tiny = " + tinyString + "\n small = " + smallString + "\n mid =" + midString2 + "\n large =" + largeString);
 	forcesText.setPosition(20.0f, 1400.0f);
 	forcesText.setCharacterSize(30U);
-	forcesText.setFillColor(sf::Color::Red);
+	forcesText.setFillColor(sf::Color::White);
 
 	std::stringstream stream8;
 	stream8 << std::fixed << std::setprecision(3) << threatLow;
@@ -227,7 +227,7 @@ void Game::setupTexts()
 	threatLevelText.setString("Threat Level: \n low = " + lowString + "\n mid = " + midString3 + "\n high =" + highString);
 	threatLevelText.setPosition(20.0f, 1600.0f);
 	threatLevelText.setCharacterSize(30U);
-	threatLevelText.setFillColor(sf::Color::Red);
+	threatLevelText.setFillColor(sf::Color::White);
 
 	std::stringstream stream11;
 	stream11 << std::fixed << std::setprecision(3) << defuzzedResult;
@@ -237,7 +237,7 @@ void Game::setupTexts()
 	defuzzedResultText.setString("Defuzzified Result: " + defuzzedString);
 	defuzzedResultText.setPosition(20.0f, 1800.0f);
 	defuzzedResultText.setCharacterSize(30U);
-	defuzzedResultText.setFillColor(sf::Color::Red);
+	defuzzedResultText.setFillColor(sf::Color::White);
 }
 
 void Game::setRandomEnemyVariables()
