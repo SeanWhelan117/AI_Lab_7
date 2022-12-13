@@ -270,10 +270,10 @@ void Game::findForceAndRange()
 
 	//double FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3);
 
-	forceTiny = FuzzyTrapezoid(force, 0, 3, 5, 7);
+	forceTiny = FuzzyTriangle(force, 0, 1, 7);
 	forceSmall = FuzzyTrapezoid(force, 6, 8, 10, 12);
 	forceMid = FuzzyTrapezoid(force, 11, 13, 15, 17);
-	forceLarge = FuzzyTrapezoid(force, 16, 18, 20, 22);
+	forceLarge = FuzzyGrade(force, 16, 19);
 
 
 
@@ -283,9 +283,9 @@ void Game::findForceAndRange()
 	// range mid = 1150 - 2100
 	// range far = 1950 - 2750
 
-	rangeClose = FuzzyTrapezoid(range, 500, 700, 1100, 1300);
+	rangeClose = FuzzyTriangle(range,0,  500, 1300);
 	rangeMid = FuzzyTrapezoid(range, 1150, 1350, 1900, 2100);
-	rangeFar = FuzzyTrapezoid(range, 1950, 2150, 2550, 2750);
+	rangeFar = FuzzyGrade(range, 1950, 2250);
 
 
 }
@@ -303,6 +303,31 @@ void Game::deFuzzifyResults()
 {
 	defuzzedResult = 0;
 	defuzzedResult = (threatLow * 10 + threatMid * 30 + threatHigh * 50) / (threatLow + threatMid + threatHigh);
+}
+
+double Game::FuzzyTriangle(double value, double x0, double x1, double x2)
+{
+	double result = 0;
+	double x = value;
+
+	if ((x <= x0) || (x >= x2))
+	{
+		result = 0;
+	}
+	else if (x == x1)
+	{
+		result = 1;
+	}
+	else if ((x > x0) && (x < x1))
+	{
+		result = ((x - x0) / (x1 - x0));
+	}
+	else 
+	{
+		result = ((x2 - x) / (x2 - x1));
+	}
+
+	return result;
 }
 
 
@@ -328,6 +353,27 @@ double Game::FuzzyTrapezoid(double value, double x0, double x1, double x2, doubl
 		result = ((x3 - x) / (x3 - x2));
 	}
 
+	return result;
+}
+
+double Game::FuzzyGrade(double value, double x0, double x1)
+{
+	double result = 0;
+	double x = value;
+
+	if (x <= x0)
+	{
+		result = 0;
+
+	}
+	else if (x > x1)
+	{
+		result = 1;
+	}
+	else
+	{
+		result = ((x - x0) / (x1 - x0));
+	}
 	return result;
 }
 

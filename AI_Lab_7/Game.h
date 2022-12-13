@@ -54,7 +54,9 @@ private:
 	void deFuzzifyResults();
 	void findForceAndRange();
 
+	double FuzzyTriangle(double value, double x0, double x1, double x2);
 	double FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3);
+	double FuzzyGrade(double value, double x0, double x1);
 
 	double FuzzyAND(double A, double B);
 
